@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    container_name: ai_vision_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app
+      - ./backend/app/models:/app/models
+      - ./backend/app/datasets:/app/datasets
+      - ./backend/app/outputs:/app/outputs
+    restart: unless-stopped
