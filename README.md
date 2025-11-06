@@ -1,2 +1,11 @@
-# CoSenseAI
-This project presents an interactive, open-source system designed to make creating and using AI models accessible to everyone, regardless of technical expertise. The device allows users to switch between training and function modes: in training mode, AI learns through simple feedback (correct/incorrect responses) using inputs from a camera and microphone; in function mode, it applies the learned model in real-world scenarios such as recognizing people, objects, or voices. Trained models can be exported and shared, enabling community-driven datasets and reusable AI solutions. By simplifying model creation and fostering collaborative knowledge-sharing, the system lowers barriers to AI adoption and demonstrates social impact in domains such as education, accessibility, and small-scale businesses.
+AI Vision Backend - FastAPI + YOLOv8 (Training + Inference) - Docker-ready
+
+This package contains the backend server which supports:
+- Inference endpoint (/detect) using YOLOv8 (custom model if trained, else base model)
+- Training endpoint (/train) to fine-tune YOLO on user-uploaded datasets (YOLO format)
+- Upload API for datasets and objects
+- Dockerfile and docker-compose for easy deployment
+
+Important:
+- This repo expects Ultralytics YOLO (ultralytics package) and PyTorch available in the environment.
+- Training in Docker may require additional GPU setup for speed (optional). CPU training is supported but slow.
