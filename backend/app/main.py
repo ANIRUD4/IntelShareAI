@@ -58,3 +58,13 @@ def list_models():
         if f.endswith('.pkl') or f.endswith('.pt') or f.endswith('.pth'):
             models.append(f)
     return {'models': models}
+
+#upload image to recognise
+from fastapi import UploadFile, File
+from app.recognize import recognize_from_image_bytes
+
+@app.post("/recognize_face")
+async def recognize_face(file: UploadFile = File(...)):
+    image_bytes = await file.read()
+    result = recognize_from_image_bytes(image_bytes)
+    return result

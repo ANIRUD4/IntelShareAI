@@ -51,3 +51,50 @@ def recognize_once_from_camera(device_index=0, save_on_match=True):
             cv2.imwrite(path, frame)
     cap.release()
     return result
+
+#recognise from image upload
+def recognize_from_image_bytes(image_bytes):
+    model = load_model()
+    if model is None:
+        return {'status': 'error', 'detail': 'No trained face model found'}
+
+    known_encodings = model['encodings']
+    known_labels = model['labels']
+
+    # Convert to numpy
+    np_arr = np.frombuffer(image_bytes, np.uint8)
+    frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+    if frame is None:
+        return {'status': 'error', 'detail': 'Invalid image'}
+
+    # Convert to RGB correctly
+    rgb = frame[:, :, ::-1]   # Faster and avoids color flags
+
+    # Detect faces with CNN (better accuracy than HOG)
+    boxes = face_recognition.face_locations(rgb, model='cnn')
+    if len(boxes) == 0:
+        # try HOG fallback
+        boxes = face_recognition.face_locations(rgb, model='hog')
+        if len(boxes) == 0:
+            return {'status': 'no_face_detected'}
+
+    encs = face_recognition.face_encodings(rgb, boxes)
+    if len(encs) == 0:
+        return {'status': 'no_face_detected'}
+
+    # Take first face (selfie assumption)
+    enc = encs[0]
+
+    distances = face_recognition.face_distance(known_encodings, enc)
+    best_idx = int(np.argmin(distances))
+    best_dist = float(distances[best_idx])
+
+    label = known_labels[best_idx]
+    match = best_dist <= FACE_DISTANCE_THRESHOLD
+
+    return {
+        'status': 'ok' if match else 'unknown',
+        'label': label if match else None,
+        'distance': round(best_dist, 4)
+    }

@@ -5,7 +5,11 @@ FROM python:3.10-slim
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential cmake git wget libopenblas-dev liblapack-dev libx11-6 libgtk2.0-0 libglib2.0-0 libsm6 libxrender1 libxext6 pkg-config libboost-all-dev \
+    build-essential cmake git wget \
+    libopenblas-dev liblapack-dev \
+    libx11-6 libgtk2.0-0 libglib2.0-0 libsm6 libxrender1 libxext6 \
+    pkg-config libboost-all-dev \
+    libgl1 libgl1-mesa-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
