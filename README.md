@@ -1,11 +1,15 @@
-AI Vision Backend - FastAPI + YOLOv8 (Training + Inference) - Docker-ready
+Face Recognition Backend (FastAPI) — Edge-ready (Raspberry Pi / Jetson)
 
-This package contains the backend server which supports:
-- Inference endpoint (/detect) using YOLOv8 (custom model if trained, else base model)
-- Training endpoint (/train) to fine-tune YOLO on user-uploaded datasets (YOLO format)
-- Upload API for datasets and objects
-- Dockerfile and docker-compose for easy deployment
+Features included:
+- Capture face images from camera and save under datasets/<username>/
+- Train face recognition embeddings from datasets and save to models/faces.pkl
+- Real-time recognition from camera; on recognized faces, new images are appended to dataset (incremental learning)
+- FastAPI endpoints to control capture, training, and recognition
+- Dockerfile + docker-compose.yml (notes for Raspberry Pi / Jetson included)
 
-Important:
-- This repo expects Ultralytics YOLO (ultralytics package) and PyTorch available in the environment.
-- Training in Docker may require additional GPU setup for speed (optional). CPU training is supported but slow.
+Important notes for edge devices:
+- face_recognition depends on dlib which is heavy to build. On Raspberry Pi / Jetson, prefer installing platform-specific wheels or build from source.
+- For NVIDIA Jetson, use NVIDIA's base images and install dlib/face_recognition appropriately (instructions in README).
+- The provided Dockerfile works on many x86 Linux hosts; adapting for Pi/Jetson may require different base images and prebuilt wheels.
+
+Run locally (non-Docker) recommended for initial tests on dev machine, then adapt Docker for target edge device.

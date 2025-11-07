@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    container_name: face_recog_backend
+    ports:
+      - "8000:8000"
+    # devices:
+    #   - "/dev/video0:/dev/video0"
+    volumes:
+      - ./backend/app/datasets:/app/app/datasets
+      - ./backend/app/models:/app/app/models
+      - ./backend/app/outputs:/app/app/outputs
+    restart: unless-stopped
