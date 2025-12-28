@@ -1,15 +1,149 @@
-Face Recognition Backend (FastAPI) — Edge-ready (Raspberry Pi / Jetson)
+# IntelShare 🧠  
+**Human-in-the-Loop Personalized AI on the Edge**
 
-Features included:
-- Capture face images from camera and save under datasets/<username>/
-- Train face recognition embeddings from datasets and save to models/faces.pkl
-- Real-time recognition from camera; on recognized faces, new images are appended to dataset (incremental learning)
-- FastAPI endpoints to control capture, training, and recognition
-- Dockerfile + docker-compose.yml (notes for Raspberry Pi / Jetson included)
+IntelShare is a system that allows users to **teach AI systems using natural interaction** — vision, voice, and confirmation — without datasets, retraining, or machine learning expertise.
 
-Important notes for edge devices:
-- face_recognition depends on dlib which is heavy to build. On Raspberry Pi / Jetson, prefer installing platform-specific wheels or build from source.
-- For NVIDIA Jetson, use NVIDIA's base images and install dlib/face_recognition appropriately (instructions in README).
-- The provided Dockerfile works on many x86 Linux hosts; adapting for Pi/Jetson may require different base images and prebuilt wheels.
+The system learns incrementally from real-world inputs and always keeps the **human in control**.
 
-Run locally (non-Docker) recommended for initial tests on dev machine, then adapt Docker for target edge device.
+---
+
+## 🚀 Key Features
+
+- 📷 Vision-based learning using live camera input  
+- 🎙️ Voice-based labeling using **offline speech recognition (Vosk)**  
+- 🔁 Human-in-the-loop confirmation and correction  
+- 📈 Incremental learning without retraining models  
+- 🧠 Embedding-based knowledge storage  
+- ⚙️ Edge-friendly and hardware-ready architecture  
+
+---
+
+## 🧩 High-Level Workflow
+
+Camera → Embedding → Learn → Store Knowledge
+↓
+Inference
+↓
+Human Confirmation
+↓
+Incremental Update
+
+
+The system never makes autonomous decisions — every prediction is verified or corrected by the user.
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- Python
+- FastAPI
+- Vosk (offline speech recognition)
+- OpenCV
+- NumPy
+
+### Frontend
+- HTML
+- JavaScript
+- Browser Camera & Microphone APIs
+
+### AI / ML
+- Embedding-based similarity
+- Confidence-based incremental updates
+- No datasets, no retraining
+
+---
+
+## 📁 Project Structure
+
+
+The system never makes autonomous decisions — every prediction is verified or corrected by the user.
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- Python
+- FastAPI
+- Vosk (offline speech recognition)
+- OpenCV
+- NumPy
+
+### Frontend
+- HTML
+- JavaScript
+- Browser Camera & Microphone APIs
+
+### AI / ML
+- Embedding-based similarity
+- Confidence-based incremental updates
+- No datasets, no retraining
+
+---
+
+## 📁 Project Structure
+
+intelshare/
+├── backend/
+│ ├── routes/ # learn, infer, confirm, speech
+│ ├── orchestrator.py
+│ └── main.py
+├── perception/
+│ └── embedding_engine.py
+├── interaction/
+│ ├── voice_listener.py
+│ └── voice_api.py
+├── data/
+│ └── knowledge_units/
+├── frontend/
+│ ├── index.html
+│ └── script.js
+└── README.md
+
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Repository
+git clone <repo-url>
+cd intelshare
+
+
+2️⃣ Install Python Dependencies
+pip install -r requirements.txt
+
+3️⃣ Install FFmpeg (Required for Speech)
+
+FFmpeg is required to convert browser-recorded audio into a format usable by Vosk.
+
+Download FFmpeg:
+https://www.gyan.dev/ffmpeg/builds/
+
+Add the bin directory to your system PATH
+
+Verify installation:
+
+ffmpeg -version
+
+4️⃣ Download Vosk Model
+
+Download an English Vosk model:
+https://alphacephei.com/vosk/models/
+
+Example:
+vosk-model-small-en-us-0.15
+
+
+Place it inside:
+models/
+
+5️⃣ Run the Backend
+
+uvicorn backend.main:app --reload
+
+
+6️⃣ Run the Frontend
+
+Open frontend/index.html using Live Server or any local web server
